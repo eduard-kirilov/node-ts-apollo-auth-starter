@@ -2,7 +2,7 @@
     "name": "online-store-5-api-products",
     "version": "0.1.0",
     "private": true,
-    "author": "Fr0ntender",
+    "author": "Eduard Kirilov <kev987.free@ya.ru>",
     "license": "MIT",
     "scripts": {
         "start": "nodemon -r dotenv/config src/index.js dotenv_config_path=.env"
