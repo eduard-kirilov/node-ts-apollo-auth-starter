@@ -4,18 +4,18 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 
-const passport = require('passport');
-const refresh = require('passport-oauth2-refresh');
-const axios = require('axios');
-const { Strategy: LocalStrategy } = require('passport-local');
-const { Strategy: TwitterStrategy } = require('passport-twitter');
-const { Strategy: GitHubStrategy } = require('passport-github2');
-const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
-const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
-const _ = require('lodash');
-const moment = require('moment');
+import passport from 'passport';
+import refresh from 'passport-oauth2-refresh';
+import axios from 'axios';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { Strategy as GitHubStrategy } from 'passport-github2';
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2';
+import _ from 'lodash';
+import moment from 'moment';
 
-const User = require('../models/User');
+import { User } from '../models/User';
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -309,7 +309,7 @@ passport.use(new LinkedInStrategy({
 /**
  * Login Required middleware.
  */
-exports.isAuthenticated = (req, res, next) => {
+export const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -322,7 +322,7 @@ exports.isAuthenticated = (req, res, next) => {
 /**
  * Authorization Required middleware.
  */
-exports.isAuthorized = (req, res, next) => {
+export const isAuthorized = (req, res, next) => {
   const provider = req.path.split('/')[2];
   const token = req.user.tokens.find((token) => token.kind === provider);
   if (token) {

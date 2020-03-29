@@ -5,9 +5,6 @@
   "author": "Eduard Kirilov <kev987.free@ya.ru>",
   "description": "Node, Mongo, GraphQL - Starter Kit",
   "license": "MIT",
-  "scripts": {
-    "start": "nodemon -r dotenv/config ./src dotenv_config_path=.env"
-  },
   "dependencies": {
     "apollo-server-express": "^2.11.0",
     "axios": "^0.19.2",
@@ -26,6 +23,7 @@
     "graphql-tools": "^4.0.7",
     "lodash": "^4.17.15",
     "lusca": "^1.6.1",
+    "mailchecker": "^3.3.4",
     "moment": "^2.24.0",
     "mongoose": "^5.6.10",
     "morgan": "^1.10.0",
@@ -36,7 +34,8 @@
     "passport-linkedin-oauth2": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-oauth2-refresh": "^2.0.0",
-    "passport-twitter": "^1.0.4"
+    "passport-twitter": "^1.0.4",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -47,17 +46,40 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-typescript": "^7.9.0",
     "@babel/register": "^7.9.0",
+    "@types/compression": "^1.7.0",
+    "@types/errorhandler": "^1.5.0",
     "@types/express": "^4.17.3",
+    "@types/express-session": "^1.17.0",
+    "@types/express-status-monitor": "^1.2.0",
     "@types/graphql-relay": "^0.4.11",
     "@types/lodash": "^4.14.149",
+    "@types/lusca": "^1.6.1",
     "@types/minimist": "^1.2.0",
+    "@types/mongoose": "^5.7.8",
+    "@types/morgan": "^1.9.0",
+    "@types/nodemailer": "^6.4.0",
+    "@types/passport": "^1.0.3",
+    "@types/passport-github2": "^1.2.4",
+    "@types/passport-google-oauth": "^1.0.41",
+    "@types/passport-linkedin-oauth2": "^1.5.1",
+    "@types/passport-local": "^1.0.33",
+    "@types/passport-oauth2-refresh": "^1.1.1",
+    "@types/passport-twitter": "^1.0.34",
     "@types/uuid": "^7.0.2",
+    "@types/validator": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "babel-jest": "^25.1.0",
+    "babel-plugin-idx": "^2.4.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "prettier": "^2.0.1",
     "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "nodemon",
+    "start-debug": "nodemon --inspect",
+    "lint": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
+    "fix": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix ."
   }
 }

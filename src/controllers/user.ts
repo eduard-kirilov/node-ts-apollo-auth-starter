@@ -4,14 +4,14 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 
-const { promisify } = require('util');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const passport = require('passport');
-const _ = require('lodash');
-const validator = require('validator');
-const mailChecker = require('mailchecker');
-const User = require('../models/User');
+import { promisify } from 'util';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
+import passport from 'passport';
+import _ from 'lodash';
+import validator from 'validator';
+import mailChecker from 'mailchecker';
+import { User } from '../models/User';
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -19,7 +19,7 @@ const randomBytesAsync = promisify(crypto.randomBytes);
  * POST /login
  * Sign in using email and password.
  */
-exports.postLogin = (req, res, next) => {
+export const postLogin = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
   if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: 'Password cannot be blank.' });
@@ -48,7 +48,7 @@ exports.postLogin = (req, res, next) => {
  * GET /logout
  * Log out.
  */
-exports.logout = (req, res) => {
+export const logout = (req, res) => {
   req.logout();
   req.session.destroy((err) => {
     if (err) {
@@ -68,7 +68,7 @@ exports.logout = (req, res) => {
  * POST /signup
  * Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+export const postSignup = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
   if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
@@ -107,7 +107,7 @@ exports.postSignup = (req, res, next) => {
  * POST /account/profile
  * Update profile information.
  */
-exports.postUpdateProfile = (req, res, next) => {
+export const postUpdateProfile = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
 
@@ -142,7 +142,7 @@ exports.postUpdateProfile = (req, res, next) => {
  * POST /account/password
  * Update current password.
  */
-exports.postUpdatePassword = (req, res, next) => {
+export const postUpdatePassword = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
   if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
@@ -167,7 +167,7 @@ exports.postUpdatePassword = (req, res, next) => {
  * POST /account/delete
  * Delete user account.
  */
-exports.postDeleteAccount = (req, res, next) => {
+export const postDeleteAccount = (req, res, next) => {
   User.deleteOne({ _id: req.user.id }, (err) => {
     if (err) { return next(err); }
     req.logout();
@@ -180,7 +180,7 @@ exports.postDeleteAccount = (req, res, next) => {
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
  */
-exports.getOauthUnlink = (req, res, next) => {
+export const getOauthUnlink = (req, res, next) => {
   const { provider } = req.params;
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
@@ -213,7 +213,7 @@ exports.getOauthUnlink = (req, res, next) => {
  * GET /reset/:token
  * Reset Password page.
  */
-exports.getReset = (req, res, next) => {
+export const getReset = (req, res, next) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -243,7 +243,7 @@ exports.getReset = (req, res, next) => {
  * GET /account/verify/:token
  * Verify email address
  */
-exports.getVerifyEmailToken = (req, res, next) => {
+export const getVerifyEmailToken = (req, res, next) => {
   if (req.user.emailVerified) {
     req.flash('info', { msg: 'The email address has been verified.' });
     return res.redirect('/account');
@@ -285,7 +285,7 @@ exports.getVerifyEmailToken = (req, res, next) => {
  * GET /account/verify
  * Verify email address
  */
-exports.getVerifyEmail = (req, res, next) => {
+export const getVerifyEmail = (req, res, next) => {
   if (req.user.emailVerified) {
     req.flash('info', { msg: 'The email address has been verified.' });
     return res.redirect('/account');
@@ -366,7 +366,7 @@ exports.getVerifyEmail = (req, res, next) => {
  * POST /reset/:token
  * Process the reset password request.
  */
-exports.postReset = (req, res, next) => {
+export const postReset = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
   if (req.body.password !== req.body.confirm) validationErrors.push({ msg: 'Passwords do not match' });
@@ -450,7 +450,7 @@ exports.postReset = (req, res, next) => {
  * GET /forgot
  * Forgot Password page.
  */
-exports.getForgot = (req, res) => {
+export const getForgot = (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -463,7 +463,7 @@ exports.getForgot = (req, res) => {
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
-exports.postForgot = (req, res, next) => {
+export const postForgot = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
 

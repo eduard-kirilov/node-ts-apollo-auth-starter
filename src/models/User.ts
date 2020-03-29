@@ -4,9 +4,9 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const mongoose = require('mongoose');
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
@@ -28,9 +28,7 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-/**
- * Password hash middleware.
- */
+// Password hash middleware.
 userSchema.pre('save', function save(next) {
   const user = this;
   if (!user.isModified('password')) { return next(); }
@@ -44,18 +42,14 @@ userSchema.pre('save', function save(next) {
   });
 });
 
-/**
- * Helper method for validating user's password.
- */
+// Helper method for validating user's password.
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     cb(err, isMatch);
   });
 };
 
-/**
- * Helper method for getting user's gravatar.
- */
+// Helper method for getting user's gravatar.
 userSchema.methods.gravatar = function gravatar(size) {
   if (!size) {
     size = 200;
@@ -67,6 +61,4 @@ userSchema.methods.gravatar = function gravatar(size) {
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+export const User = mongoose.model('User', userSchema);

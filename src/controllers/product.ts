@@ -4,8 +4,8 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 
-const Product = require('../models/Product');
-const { makeExecutableSchema } = require('graphql-tools');
+import { Product } from '../models/Product';
+import { makeExecutableSchema } from 'graphql-tools';
 
 const typeDefs = `
   type Product {
@@ -107,7 +107,7 @@ const resolvers = {
   },
 };
 
-module.exports = makeExecutableSchema({
+export default makeExecutableSchema({
   typeDefs: [typeDefs],
   resolvers: resolvers,
 });

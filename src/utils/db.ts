@@ -4,12 +4,12 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 
-const mongoose = require('mongoose');
-const chalk = require('chalk');
+import mongoose from 'mongoose';
+import chalk from 'chalk';
 
-const { DB_HOST } = process.env;
+const { DB_HOST = '' } = process.env;
 
-exports.setUpConnection = () => {
+export const setUpConnection = ():void => {
   mongoose.set('useFindAndModify', false);
   mongoose.set('useCreateIndex', true);
   mongoose.set('useNewUrlParser', true);
