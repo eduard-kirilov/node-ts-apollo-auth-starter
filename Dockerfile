@@ -3,6 +3,6 @@ WORKDIR /home/os-one
 COPY . /home/os-one
 RUN yarn \
     && yarn global add nodemon
-ENV DB_HOST=mongodb+srv://admin:C3l03cja12cn5@os-mtwj9.gcp.mongodb.net/os-two?retryWrites=true&w=majority \
-    PORT=3001
+ENV DB_HOST=${DB_HOST} \
+    PORT=${PORT}
 CMD ["nodemon", "src/index.js"]
