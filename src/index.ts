@@ -16,9 +16,11 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import expressStatusMonitor from 'express-status-monitor';
+import { makeExecutableSchema } from 'graphql-tools';
 
-// Controllers.
-import  makeExecutableSchema from './controllers/product';
+// GraphQL.
+import  { resolvers } from './graphql/resolvers';
+import  { typeDefs } from './graphql/typeDefs';
 
 // Data base.
 import { setUpConnection } from './utils/db';
@@ -71,7 +73,7 @@ if (NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
 } else {
-  app.use((err, req, res, next) => {
+  app.use((err, req, res, next): void => {
     console.error(err);
     res.status(500).send('Server Error');
   });
@@ -79,7 +81,10 @@ if (NODE_ENV === 'development') {
 
 // Using graphql middleware
 const server = new ApolloServer({
-    schema: makeExecutableSchema,
+    schema: makeExecutableSchema({
+      typeDefs: [typeDefs],
+      resolvers: resolvers,
+    }),
     playground: true
   });
 
