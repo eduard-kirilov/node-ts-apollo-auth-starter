@@ -1,9 +1,8 @@
 /**
- * Node, Mongo, GraphQL - Starter Kit
- * https://github.com/eduard-kirilov/Online-store-5-api-products
- * Copyright (c) 2020 Eduard Kirilov | MIT License
- */
-
+* Node, TS, Apollo, Auth, - Starter
+* https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
+* Copyright (c) 2020 Eduard Kirilov | MIT License
+*/
 import passport from 'passport';
 import { Strategy } from 'passport-local';
 import _ from 'lodash';

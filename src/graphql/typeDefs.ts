@@ -1,8 +1,15 @@
+/**
+* Node, TS, Apollo, Auth, - Starter
+* https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
+* Copyright (c) 2020 Eduard Kirilov | MIT License
+*/
 export const typeDefs = `
   type User {
     _id: ID!
     email: String!
     password: String!
+    createdAt: String!
+    updatedAt: String!
   }
   type AuthData {
     userId: ID!
@@ -33,6 +40,6 @@ export const typeDefs = `
     ): Product
     sortProduct(title: String): Product
     delProduct (_id: ID): Product
-    createUser(email: String!, password: String!): AuthData!
+    signUp(email: String!, password: String!): AuthData!
   }
 `;

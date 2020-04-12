@@ -1,9 +1,8 @@
 /**
-* Node, Mongo, GraphQL - Starter Kit
-* https://github.com/eduard-kirilov/Online-store-5-api-products
+* Node, TS, Apollo, Auth, - Starter
+* https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
-
 import mongoose from 'mongoose';
 import chalk from 'chalk';
 

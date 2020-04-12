@@ -1,13 +1,11 @@
 /**
- * Node, Mongo, GraphQL - Starter Kit
- * https://github.com/eduard-kirilov/Online-store-5-api-products
- * Copyright (c) 2020 Eduard Kirilov | MIT License
- */
-
+* Node, TS, Apollo, Auth, - Starter
+* https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
+* Copyright (c) 2020 Eduard Kirilov | MIT License
+*/
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
+// import crypto from 'crypto';
 import mongoose from 'mongoose';
-import { IUser } from '../utils/interface';
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,9 +18,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    createdAt: String,
+    updatedAt: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
     profile: {
+      role: {
+        type: String,
+        required: true,
+      },
       name: String,
       gender: String,
       location: String,
@@ -35,7 +39,7 @@ const userSchema = new mongoose.Schema(
 
 // Password hash middleware.
 userSchema.pre('save', function save(next) {
-  const user: IUser = this;
+  const user: any = this;
   if (!user.isModified('password')) {
     return next();
   }

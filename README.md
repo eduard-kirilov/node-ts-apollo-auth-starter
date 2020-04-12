@@ -1,2 +1,2 @@
-# Online-store-5-api-products
-Node, Express, Apollo, GraphQl, Mongoose, MongoDB.
+# Node, TS, Apollo, Auth, - Starter
+Node, TS, Express, Auth, Apollo, GraphQl, Mongoose, MongoDB.

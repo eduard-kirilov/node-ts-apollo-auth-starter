@@ -1,9 +1,8 @@
 /**
-* Node, Mongo, GraphQL - Starter Kit
-* https://github.com/eduard-kirilov/Online-store-5-api-products
+* Node, TS, Apollo, Auth, - Starter
+* https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
-
 import { ApolloServer } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -73,7 +72,7 @@ if (NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
 } else {
-  app.use((err, req, res, next): void => {
+  app.use((err: any, req: any, res: any, next: any): void => {
     console.error(err);
     res.status(500).send('Server Error');
   });
@@ -91,6 +90,6 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 app.listen(PORT, () => {
-    console.log(`${chalk.green('✓')} 🚀 Server running on http://localhost:${PORT}  `);
-    console.log(`${chalk.green('✓')} 🚀 GraphQL running on http://localhost:${PORT}/graphql  `);
+    console.log(`${chalk.green('✓')} Server running on http://localhost:${PORT}  `);
+    console.log(`${chalk.green('✓')} GraphQL running on http://localhost:${PORT}/graphql  `);
 })
