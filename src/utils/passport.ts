@@ -4,13 +4,13 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 import passport from 'passport';
-import { Strategy } from 'passport-local';
+
+import { GraphQLLocalStrategy } from 'graphql-passport';
 import _ from 'lodash';
-
 import { User } from '../models/user';
-import { IUser } from '../utils/interface';
+import { IPropsString, IUserCompare } from '../utils/interface';
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: IPropsString, done) => {
   done(null, user.id);
 });
 
@@ -24,8 +24,8 @@ passport.deserializeUser((id, done) => {
  * Sign in using Email and Password.
  */
 passport.use(
-  new Strategy({ usernameField: 'email' }, (email, password, done) => {
-    User.findOne({ email: email.toLowerCase() }, (err, user:IUser) => {
+  new GraphQLLocalStrategy((email, password, done) => {
+    User.findOne({ email: email.toLowerCase() }, (err: any, user:IPropsString & IUserCompare) => {
       if (err) {
         return done(err);
       }

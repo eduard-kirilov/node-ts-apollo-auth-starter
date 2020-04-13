@@ -1,17 +1,16 @@
 /**
-* Node, TS, Apollo, Auth, - Starter
-* https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
-* Copyright (c) 2020 Eduard Kirilov | MIT License
-*/
+ * Node, TS, Apollo, Auth, - Starter
+ * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
+ * Copyright (c) 2020 Eduard Kirilov | MIT License
+ */
 import { Product } from '../models/product';
 import { User } from '../models/user';
 import passport from 'passport';
-import { IPropsString, IProducts } from '../utils/interface';
-
+import { IPropsString, IProducts, UserContext } from '../utils/interface';
 
 export const resolvers = {
   Query: {
-    product: async (parent: any, { id }: IPropsString) => {
+    product: async (parent: unknown, { id }: IPropsString) => {
       try {
         const product = await Product.findById(id);
         return product;
@@ -19,14 +18,16 @@ export const resolvers = {
         throw err;
       }
     },
-    products: async (parent: any, { title }: IProducts) => {
+    products: async (parent: unknown, { title }: IProducts) => {
       try {
         if (title && title.length) {
-          const products = await Product.find({ title: { $regex: title, $options: 'i' } });
+          const products = await Product.find({
+            title: { $regex: title, $options: 'i' },
+          });
           return products;
         }
         const products = await Product.find();
-        return products
+        return products;
       } catch (err) {
         throw err;
       }
@@ -42,7 +43,7 @@ export const resolvers = {
   },
   Mutation: {
     addProduct: (
-      parent: any,
+      parent: unknown,
       { title, subtitle, url }: IPropsString,
     ): object => {
       const product = new Product({
@@ -52,7 +53,7 @@ export const resolvers = {
       });
       return product.save();
     },
-    delProduct: (parent: any, { id }: IPropsString): object => {
+    delProduct: (parent: unknown, { id }: IPropsString): object => {
       return Product.findOneAndRemove(
         {
           _id: id,
@@ -63,7 +64,7 @@ export const resolvers = {
       );
     },
     upProduct: (
-      parent: any,
+      parent: unknown,
       { id, title, subtitle, url }: IPropsString,
     ): object => {
       return Product.updateOne(
@@ -83,7 +84,7 @@ export const resolvers = {
       );
     },
     sortProduct: (
-      parent: any,
+      parent: unknown,
       { id, title, subtitle, url }: IPropsString,
     ): object => {
       return Product.updateOne(
@@ -102,7 +103,7 @@ export const resolvers = {
         },
       );
     },
-    signUp: async (parent: any, { email, password }:IPropsString) => {
+    signUp: async (parent: unknown, { email, password }: IPropsString) => {
       try {
         const user = await User.findOne({ email });
         if (user) {
@@ -110,7 +111,7 @@ export const resolvers = {
         } else {
           const newUser = new User({
             email: email,
-            password: password
+            password: password,
           });
           const savedUser = await newUser.save();
           return { userId: savedUser.id };
@@ -119,5 +120,23 @@ export const resolvers = {
         throw error;
       }
     },
+    login: async (
+      parent: unknown,
+      { email, password }: IPropsString,
+      context: UserContext,
+    ) => {
+      const { user } = await context.authenticate('graphql-local', {
+        email,
+        password,
+      });
+      await context.login(user);
+      return { user };
+    },
+    logout: (
+      parent: unknown,
+      args: unknown,
+      context: UserContext
+    ) =>
+      context.logout(),
   },
 };

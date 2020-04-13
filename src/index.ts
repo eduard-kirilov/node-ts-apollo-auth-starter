@@ -16,7 +16,8 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import expressStatusMonitor from 'express-status-monitor';
 import { makeExecutableSchema } from 'graphql-tools';
-
+import { buildContext } from 'graphql-passport';
+import { User } from './models/user';
 // GraphQL.
 import  { resolvers } from './graphql/resolvers';
 import  { typeDefs } from './graphql/typeDefs';
@@ -84,6 +85,7 @@ const server = new ApolloServer({
       typeDefs: [typeDefs],
       resolvers: resolvers,
     }),
+    context: ({ req, res }) => buildContext({ req, res, User }),
     playground: true
   });
 

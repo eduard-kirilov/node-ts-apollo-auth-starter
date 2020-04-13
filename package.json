@@ -20,6 +20,7 @@
     "express-graphql": "^0.9.0",
     "express-session": "^1.17.0",
     "express-status-monitor": "^1.2.9",
+    "graphql-passport": "^0.6.3",
     "graphql-tools": "^4.0.7",
     "lodash": "^4.17.15",
     "lusca": "^1.6.1",
@@ -28,7 +29,6 @@
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.0.1",
     "validator": "^13.0.0"
   },
@@ -55,7 +55,6 @@
     "@types/morgan": "^1.9.0",
     "@types/nodemailer": "^6.4.0",
     "@types/passport": "^1.0.3",
-    "@types/passport-local": "^1.0.33",
     "@types/uuid": "^7.0.2",
     "@types/validator": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
