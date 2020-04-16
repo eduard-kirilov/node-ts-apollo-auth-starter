@@ -11,7 +11,7 @@ import logger from 'morgan';
 import chalk from 'chalk';
 import errorHandler from 'errorhandler';
 import lusca from 'lusca';
-import passport from 'passport';
+import passport from './utils/passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import expressStatusMonitor from 'express-status-monitor';

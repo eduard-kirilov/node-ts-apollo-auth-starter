@@ -6,7 +6,6 @@
 import passport from 'passport';
 
 import { GraphQLLocalStrategy } from 'graphql-passport';
-import _ from 'lodash';
 import { User } from '../models/user';
 import { IPropsString, IUserCompare } from '../utils/interface';
 
@@ -50,3 +49,5 @@ passport.use(
     });
   }),
 );
+
+export default passport;

@@ -6,6 +6,7 @@
 import bcrypt from 'bcrypt';
 // import crypto from 'crypto';
 import mongoose from 'mongoose';
+import { IUser } from '../utils/interface';
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,10 +24,7 @@ const userSchema = new mongoose.Schema(
     passwordResetToken: String,
     passwordResetExpires: Date,
     profile: {
-      role: {
-        type: String,
-        required: true,
-      },
+      role: String,
       name: String,
       gender: String,
       location: String,
@@ -40,6 +38,7 @@ const userSchema = new mongoose.Schema(
 // Password hash middleware.
 userSchema.pre('save', function save(next) {
   const user: any = this;
+  console.log('pre-save ', user, this)
   if (!user.isModified('password')) {
     return next();
   }
@@ -70,4 +69,4 @@ userSchema.methods.comparePassword = function comparePassword(
   });
 };
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model<IUser>('User', userSchema);

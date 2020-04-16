@@ -4,6 +4,7 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 import mongoose from 'mongoose';
+import { IProduct } from '../utils/interface';
 
 const Schema = mongoose.Schema;
 
@@ -13,4 +14,4 @@ const ProductSchema = new Schema({
   url: { type: String },
 });
 
-export const Product = mongoose.model('Product', ProductSchema);
+export const Product = mongoose.model<IProduct>('Product', ProductSchema);

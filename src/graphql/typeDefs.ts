@@ -14,6 +14,12 @@ export const typeDefs = `
   type AuthData {
     userId: ID!
   }
+  type UserData {
+    _id: ID!
+    email: String!
+    createdAt: String!
+    updatedAt: String!
+  }
   type Product {
     _id: ID,
     title: String,
@@ -41,7 +47,7 @@ export const typeDefs = `
     sortProduct(title: String): Product
     delProduct (_id: ID): Product
     signUp(email: String!, password: String!): AuthData!
-    login(email: String!, password: String!): User!
+    login(email: String!, password: String!): UserData!
     logout: Boolean
   }
 `;

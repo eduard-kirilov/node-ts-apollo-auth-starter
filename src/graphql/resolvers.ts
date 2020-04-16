@@ -122,15 +122,12 @@ export const resolvers = {
     },
     login: async (
       parent: unknown,
-      { email, password }: IPropsString,
+      args: IPropsString,
       context: UserContext,
     ) => {
-      const { user } = await context.authenticate('graphql-local', {
-        email,
-        password,
-      });
+      const { user } = await context.authenticate('graphql-local', args);
       await context.login(user);
-      return { user };
+      return user;
     },
     logout: (
       parent: unknown,
