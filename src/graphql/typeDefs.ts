@@ -12,9 +12,9 @@ export const typeDefs = `
     updatedAt: String!
   }
   type AuthData {
-    userId: ID!
+    _id: ID!
   }
-  type UserData {
+  type CurrentUser {
     _id: ID!
     email: String!
     createdAt: String!
@@ -28,7 +28,7 @@ export const typeDefs = `
   }
   type Query {
     users: [User!]!
-    user(userId: ID!): User!
+    currentUser: CurrentUser
     product(id: ID!): Product
     products(title: String): [Product]
   }
@@ -47,7 +47,7 @@ export const typeDefs = `
     sortProduct(title: String): Product
     delProduct (_id: ID): Product
     signUp(email: String!, password: String!): AuthData!
-    login(email: String!, password: String!): UserData!
+    login(email: String!, password: String!): CurrentUser
     logout: Boolean
   }
 `;

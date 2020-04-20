@@ -5,7 +5,6 @@
  */
 import { Product } from '../models/product';
 import { User } from '../models/user';
-import passport from 'passport';
 import { IPropsString, IProducts, UserContext } from '../utils/interface';
 
 export const resolvers = {
@@ -46,22 +45,30 @@ export const resolvers = {
       parent: unknown,
       { title, subtitle, url }: IPropsString,
     ): object => {
-      const product = new Product({
-        title,
-        subtitle,
-        url,
-      });
-      return product.save();
+      try {
+        const product = new Product({
+          title,
+          subtitle,
+          url,
+        });
+        return product.save();
+      } catch (err) {
+        throw err;
+      }
     },
     delProduct: (parent: unknown, { id }: IPropsString): object => {
-      return Product.findOneAndRemove(
-        {
-          _id: id,
-        },
-        err => {
-          if (err) console.error(err);
-        },
-      );
+      try {
+        return Product.findOneAndRemove(
+          {
+            _id: id,
+          },
+          err => {
+            if (err) throw err;
+          },
+        );
+      } catch (err) {
+        throw err;
+      }
     },
     upProduct: (
       parent: unknown,
@@ -87,21 +94,25 @@ export const resolvers = {
       parent: unknown,
       { id, title, subtitle, url }: IPropsString,
     ): object => {
-      return Product.updateOne(
-        {
-          _id: id,
-        },
-        {
-          $set: {
-            title,
-            subtitle,
-            url,
+      try {
+        return Product.updateOne(
+          {
+            _id: id,
           },
-        },
-        err => {
-          if (err) console.error(err);
-        },
-      );
+          {
+            $set: {
+              title,
+              subtitle,
+              url,
+            },
+          },
+          err => {
+            if (err) console.error(err);
+          },
+        );
+      } catch (err) {
+        throw err;
+      }
     },
     signUp: async (parent: unknown, { email, password }: IPropsString) => {
       try {
@@ -129,11 +140,7 @@ export const resolvers = {
       await context.login(user);
       return user;
     },
-    logout: (
-      parent: unknown,
-      args: unknown,
-      context: UserContext
-    ) =>
+    logout: (parent: unknown, args: unknown, context: UserContext) =>
       context.logout(),
   },
 };
