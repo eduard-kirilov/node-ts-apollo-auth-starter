@@ -5,7 +5,9 @@
  */
 import { Product } from '../models/product';
 import { User } from '../models/user';
-import { IPropsString, IProducts, UserContext } from '../utils/interface';
+import { IPropsString, IProducts } from '../utils/interface';
+import { isAuthenticated } from '../utils/helper';
+import passport from 'passport';
 
 export const resolvers = {
   Query: {
@@ -37,6 +39,14 @@ export const resolvers = {
         return users;
       } catch (err) {
         throw err;
+      }
+    },
+    currentUser: (parent: unknown, args: unknown, { req }: any) => {
+      try {
+        isAuthenticated(req);
+        return req.user;
+      } catch (error) {
+        throw error;
       }
     },
   },
@@ -114,7 +124,7 @@ export const resolvers = {
         throw err;
       }
     },
-    signUp: async (parent: unknown, { email, password }: IPropsString) => {
+    signUp: async (parent: unknown, { email, password }: any, { req }: any) => {
       try {
         const user = await User.findOne({ email });
         if (user) {
@@ -124,23 +134,46 @@ export const resolvers = {
             email: email,
             password: password,
           });
-          const savedUser = await newUser.save();
-          return { userId: savedUser.id };
+          const saveUser = await newUser.save();
+          console.log(saveUser);
+          return req.logIn(saveUser, (err: any) => {
+            try {
+              if (err) throw new Error('User is not login');
+              return saveUser._id;
+            } catch (err) {
+              throw err;
+            }
+          });
         }
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        throw err;
       }
     },
-    login: async (
-      parent: unknown,
-      args: IPropsString,
-      context: UserContext,
-    ) => {
-      const { user } = await context.authenticate('graphql-local', args);
-      await context.login(user);
-      return user;
+    login: (parent: unknown, args: IPropsString, { req }: any) =>
+      new Promise((resolve: any, reject: any) => {
+        passport.authenticate('local', async (err, user, info) => {
+          try {
+            if (err) throw new Error('User is not login!');
+            if (!user)
+              throw new Error('You entered an incorrect username or password!');
+
+            await req.logIn(user, (err: any) => {
+              if (err) reject(err);
+              return resolve(user);
+            });
+
+            return resolve(user);
+          } catch (err) {
+            return reject(err);
+          }
+        })({ query: args });
+      }),
+    logout: (parent: unknown, args: unknown, ctx: any) => {
+      try {
+        return ctx.req.logout();
+      } catch (err) {
+        throw err;
+      }
     },
-    logout: (parent: unknown, args: unknown, context: UserContext) =>
-      context.logout(),
   },
 };

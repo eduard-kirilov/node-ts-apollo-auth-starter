@@ -14,12 +14,6 @@ export const typeDefs = `
   type AuthData {
     _id: ID!
   }
-  type CurrentUser {
-    _id: ID!
-    email: String!
-    createdAt: String!
-    updatedAt: String!
-  }
   type Product {
     _id: ID,
     title: String,
@@ -28,7 +22,7 @@ export const typeDefs = `
   }
   type Query {
     users: [User!]!
-    currentUser: CurrentUser
+    currentUser: User
     product(id: ID!): Product
     products(title: String): [Product]
   }
@@ -47,7 +41,7 @@ export const typeDefs = `
     sortProduct(title: String): Product
     delProduct (_id: ID): Product
     signUp(email: String!, password: String!): AuthData!
-    login(email: String!, password: String!): CurrentUser
+    login(email: String, password: String): User
     logout: Boolean
   }
 `;

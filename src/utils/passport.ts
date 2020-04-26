@@ -5,13 +5,11 @@
  */
 import passport from 'passport';
 
-import { GraphQLLocalStrategy } from 'graphql-passport';
+import { Strategy } from 'passport-local';
 import { User } from '../models/user';
 import { IPropsString, IUserCompare } from '../utils/interface';
 
-passport.serializeUser((user: IPropsString, done) => {
-  done(null, user.id);
-});
+passport.serializeUser((user: IPropsString, done) => done(null, user.id));
 
 passport.deserializeUser((id, done) => {
   User.findById(id, (err, user) => {
@@ -22,32 +20,37 @@ passport.deserializeUser((id, done) => {
 /**
  * Sign in using Email and Password.
  */
-passport.use(
-  new GraphQLLocalStrategy((email, password, done) => {
-    User.findOne({ email: email.toLowerCase() }, (err: any, user:IPropsString & IUserCompare) => {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false, { msg: `Email ${email} not found.` });
-      }
-      if (!user.password) {
-        return done(null, false, { msg: 'Your account was registered.' });
-      }
-      if (!user.comparePassword) {
-        return done(null, false, { msg: 'An error occurred on the server!' });
-      }
-      user.comparePassword(password, (err: object, isMatch: boolean) => {
-        if (err) {
-          return done(err);
-        }
-        if (isMatch) {
-          return done(null, user);
-        }
-        return done(null, false, { msg: 'Invalid email or password.' });
-      });
-    });
-  }),
+export const passportMiddleware = passport.use(
+  new Strategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+      session: true,
+    },
+    (email: any, password: any, done: any) => {
+      User.findOne(
+        { email: email.toLowerCase() },
+        (err: any, user: IPropsString & IUserCompare) => {
+          if (err) {
+            return done(err);
+          }
+          if (!user) {
+            return done(null, false, { msg: `Email ${email} not found.` });
+          }
+          if (!user.password) {
+            return done(null, false, { msg: 'Your account was registered.' });
+          }
+          user.comparePassword(password, (err: object, isMatch: boolean) => {
+            if (err) {
+              return done(err);
+            }
+            if (isMatch) {
+              return done(null, user);
+            }
+            return done(null, false, { msg: 'Invalid email or password.' });
+          });
+        },
+      );
+    },
+  ),
 );
-
-export default passport;

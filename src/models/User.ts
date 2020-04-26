@@ -21,8 +21,6 @@ const userSchema = new mongoose.Schema(
     },
     createdAt: String,
     updatedAt: String,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
     profile: {
       role: String,
       name: String,

@@ -11,38 +11,32 @@ import logger from 'morgan';
 import chalk from 'chalk';
 import errorHandler from 'errorhandler';
 import lusca from 'lusca';
-import passport from './utils/passport';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import expressStatusMonitor from 'express-status-monitor';
 import { makeExecutableSchema } from 'graphql-tools';
-import { buildContext } from 'graphql-passport';
-import { User } from './models/user';
-// GraphQL.
+
+// import GraphQL.
 import  { resolvers } from './graphql/resolvers';
 import  { typeDefs } from './graphql/typeDefs';
 
-// Data base.
-import { setUpConnection } from './utils/db';
+// import Middleware.
+import { mongooseMiddleware } from './utils/mongoose';
+import { ssessionMiddleware } from './utils/session';
+import { passportMiddleware } from './utils/passport';
 
-// Init DB sesion
-const MS = MongoStore(session);
-// API keys and Passport configuration.
-// const passportConfig = require('./utils/passport');
-
+// import process.env.
 const {
   NODE_ENV = '',
   PORT = '',
   HOST = '',
-  SESSION_SECRET = '',
-  DB_HOST = '',
+  ORIGIN_HOST,
 } = process.env;
+
 
 // Initialization of express application
 export const app = express();
 
 // Connect to DB MongoDB.
-setUpConnection();
+mongooseMiddleware();
 
 // Express configuration.
 app.set('host', HOST);
@@ -52,18 +46,9 @@ app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-  store: new MS({
-    url: DB_HOST,
-    autoReconnect: true,
-  })
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(ssessionMiddleware);
+app.use(passportMiddleware.initialize());
+app.use(passportMiddleware.session());
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
@@ -73,7 +58,7 @@ if (NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
 } else {
-  app.use((err: any, req: any, res: any, next: any): void => {
+  app.use((err: any, req: any, res: any): void => {
     console.error(err);
     res.status(500).send('Server Error');
   });
@@ -85,11 +70,16 @@ const server = new ApolloServer({
       typeDefs: [typeDefs],
       resolvers: resolvers,
     }),
-    context: ({ req, res }) => buildContext({ req, res, User }),
-    playground: true
+    context: ({ req }) => ({ req }),
   });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({
+  app,
+  cors: {
+    credentials: true,
+    origin: ORIGIN_HOST,
+  },
+});
 
 app.listen(PORT, () => {
     console.log(`${chalk.green('✓')} Server running on http://localhost:${PORT}  `);

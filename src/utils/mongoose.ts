@@ -8,7 +8,7 @@ import chalk from 'chalk';
 
 const { DB_HOST = '' } = process.env;
 
-export const setUpConnection = ():void => {
+export const mongooseMiddleware = ():void => {
   mongoose.set('useFindAndModify', false);
   mongoose.set('useCreateIndex', true);
   mongoose.set('useNewUrlParser', true);
