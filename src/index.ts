@@ -15,8 +15,8 @@ import expressStatusMonitor from 'express-status-monitor';
 import { makeExecutableSchema } from 'graphql-tools';
 
 // import GraphQL.
-import  { resolvers } from './graphql/resolvers';
-import  { typeDefs } from './graphql/typeDefs';
+import  { resolvers } from './resolvers';
+import  { typeDefs } from './shema';
 
 // import Middleware.
 import { mongooseMiddleware } from './utils/mongoose';

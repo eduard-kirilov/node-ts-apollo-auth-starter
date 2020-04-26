@@ -4,6 +4,8 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 import { Document } from 'mongoose'
+import { Request } from 'express';
+
 export interface IPropsString {
   [key: string]: string;
 }
@@ -35,4 +37,8 @@ export interface IProduct extends Document {
   title: string;
   subtitle: string;
   url: string;
+}
+
+export interface ICtx {
+  req: Request;
 }
