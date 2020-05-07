@@ -9,9 +9,10 @@ import { IProduct } from '../utils/interface';
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
-  title: { type: String },
-  subtitle: { type: String },
-  url: { type: String },
+  title: String,
+  subtitle: String,
+  url: String,
+  price: String,
 });
 
 export const Product = mongoose.model<IProduct>('Product', ProductSchema);

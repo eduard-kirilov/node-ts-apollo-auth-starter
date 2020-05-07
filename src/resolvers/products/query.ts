@@ -3,23 +3,27 @@
  * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
+import { isArray } from 'lodash';
 import { Product } from '../../models/product';
-import { IPropsString, IProducts } from '../../utils/interface';
+import { IPropsString } from '../../utils/interface';
 
-export const product = async (parent: unknown, { id }: IPropsString) => {
+interface IProducts {
+ ids: [string];
+}
+export const product = async (parent: unknown, { _id }: IPropsString) => {
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(_id);
     return product;
   } catch (err) {
     throw err;
   }
 };
 
-export const products = async (parent: unknown, { title }: IProducts) => {
+export const products = async (parent: unknown, { ids }: IProducts) => {
   try {
-    if (title && title.length) {
+    if (isArray(ids) && ids.length) {
       const products = await Product.find({
-        title: { $regex: title, $options: 'i' },
+        _id: { $in: ids, $options: 'i' },
       });
       return products;
     }

@@ -66,7 +66,6 @@ export const logout = (
   { req }: ICtx,
 ) => {
   try {
-    console.log('isAuthenticated ', req.isAuthenticated())
     isAuthenticated(req);
     return req.logout();
   } catch (err) {

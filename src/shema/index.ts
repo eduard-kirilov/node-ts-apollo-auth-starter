@@ -15,31 +15,37 @@ export const typeDefs = `
     _id: ID!
   }
   type Product {
-    _id: ID,
-    title: String,
-    subtitle: String,
-    url: String,
+    _id: ID
+    title: String
+    subtitle: String
+    url: String
+    price: String
+  }
+  type ProductId {
+    _id: ID
   }
   type Query {
     users: [User!]!
     currentUser: User
-    product(id: ID!): Product
-    products(title: String): [Product]
+    product(_id: String!): Product
+    products(ids: [String]): [Product]
   }
   type Mutation {
     addProduct(
-      title: String,
+      price: String,
       subtitle: String,
+      title: String,
       url: String,
-    ): Product
+    ): ProductId
     upProduct(
-      _id: ID!,
-      title: String,
+      _id: String!,
+      price: String,
       subtitle: String,
+      title: String,
       url: String,
-    ): Product
+    ): ProductId
     sortProduct(title: String): Product
-    delProduct (_id: ID): Product
+    delProduct (_id: String!): ProductId
     signup(email: String!, password: String!): AuthData!
     login(email: String, password: String): User
     logout: Boolean

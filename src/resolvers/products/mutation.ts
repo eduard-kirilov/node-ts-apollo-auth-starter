@@ -8,13 +8,14 @@ import { IPropsString } from '../../utils/interface';
 
 export const addProduct = (
   parent: unknown,
-  { title, subtitle, url }: IPropsString,
+  { title, subtitle, url, price }: IPropsString,
 ): object => {
   try {
     const product = new Product({
       title,
       subtitle,
       url,
+      price,
     });
     return product.save();
   } catch (err) {
@@ -22,14 +23,11 @@ export const addProduct = (
   }
 };
 
-export const delProduct = (
-  parent: unknown,
-  { id }: IPropsString,
-): object => {
+export const delProduct = (parent: unknown, { _id }: IPropsString): object => {
   try {
     return Product.findOneAndRemove(
       {
-        _id: id,
+        _id,
       },
       err => {
         if (err) throw err;
@@ -42,17 +40,18 @@ export const delProduct = (
 
 export const upProduct = (
   parent: unknown,
-  { id, title, subtitle, url }: IPropsString,
+  { _id, title, subtitle, url, price }: IPropsString,
 ): object => {
   return Product.updateOne(
     {
-      _id: id,
+      _id,
     },
     {
       $set: {
         title,
         subtitle,
         url,
+        price,
       },
     },
     err => {
@@ -63,7 +62,7 @@ export const upProduct = (
 
 export const sortProduct = (
   parent: unknown,
-  { id, title, subtitle, url }: IPropsString,
+  { id, title, subtitle, url, price }: IPropsString,
 ): object => {
   try {
     return Product.updateOne(
@@ -75,6 +74,7 @@ export const sortProduct = (
           title,
           subtitle,
           url,
+          price,
         },
       },
       err => {

@@ -37,6 +37,7 @@ export interface IProduct extends Document {
   title: string;
   subtitle: string;
   url: string;
+  price: number;
 }
 
 export interface ICtx {
