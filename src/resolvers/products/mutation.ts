@@ -9,7 +9,7 @@ import { IPropsString } from '../../utils/interface';
 export const addProduct = (
   parent: unknown,
   { title, subtitle, url, price }: IPropsString,
-): object => {
+) => {
   try {
     const product = new Product({
       title,
@@ -38,32 +38,40 @@ export const delProduct = (parent: unknown, { _id }: IPropsString): object => {
   }
 };
 
-export const upProduct = (
+export const upProduct = async (
   parent: unknown,
   { _id, title, subtitle, url, price }: IPropsString,
-): object => {
-  return Product.updateOne(
-    {
-      _id,
-    },
-    {
-      $set: {
-        title,
-        subtitle,
-        url,
-        price,
+) => {
+  try {
+    const product = await Product.updateOne(
+      {
+        _id,
       },
-    },
-    err => {
-      if (err) console.error(err);
-    },
-  );
+      {
+        $set: {
+          title,
+          subtitle,
+          url,
+          price,
+        },
+      },
+      err => {
+        if (err) {
+          throw err;
+        }
+      },
+    );
+    if (product.ok) return { _id };
+    throw new Error('product not found');
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const sortProduct = (
   parent: unknown,
   { id, title, subtitle, url, price }: IPropsString,
-): object => {
+) => {
   try {
     return Product.updateOne(
       {

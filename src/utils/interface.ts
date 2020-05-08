@@ -43,3 +43,7 @@ export interface IProduct extends Document {
 export interface ICtx {
   req: Request;
 }
+
+export interface IQueryIds {
+  ids: [string];
+}

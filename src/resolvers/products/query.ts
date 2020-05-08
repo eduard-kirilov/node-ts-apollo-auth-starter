@@ -5,11 +5,8 @@
  */
 import { isArray } from 'lodash';
 import { Product } from '../../models/product';
-import { IPropsString } from '../../utils/interface';
+import { IPropsString, IQueryIds } from '../../utils/interface';
 
-interface IProducts {
- ids: [string];
-}
 export const product = async (parent: unknown, { _id }: IPropsString) => {
   try {
     const product = await Product.findById(_id);
@@ -19,7 +16,7 @@ export const product = async (parent: unknown, { _id }: IPropsString) => {
   }
 };
 
-export const products = async (parent: unknown, { ids }: IProducts) => {
+export const products = async (parent: unknown, { ids }: IQueryIds) => {
   try {
     if (isArray(ids) && ids.length) {
       const products = await Product.find({
