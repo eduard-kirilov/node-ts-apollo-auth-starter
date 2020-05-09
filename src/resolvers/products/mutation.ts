@@ -5,6 +5,7 @@
  */
 import { Product } from '../../models/product';
 import { IPropsString } from '../../utils/interface';
+import { handleError } from '../../utils/helper';
 
 export const addProduct = (
   parent: unknown,
@@ -23,16 +24,10 @@ export const addProduct = (
   }
 };
 
-export const delProduct = (parent: unknown, { _id }: IPropsString): object => {
+export const delProduct = async (parent: unknown, { _id }: IPropsString) => {
   try {
-    return Product.findOneAndRemove(
-      {
-        _id,
-      },
-      err => {
-        if (err) throw err;
-      },
-    );
+    await Product.findOneAndRemove({ _id }, handleError);
+    return { _id };
   } catch (err) {
     throw err;
   }
@@ -55,14 +50,12 @@ export const upProduct = async (
           price,
         },
       },
-      err => {
-        if (err) {
-          throw err;
-        }
-      },
+      handleError,
     );
-    if (product.ok) return { _id };
-    throw new Error('product not found');
+    if (product.ok) {
+      return { _id };
+    }
+    throw new Error('Product not found');
   } catch (err) {
     throw err;
   }
@@ -85,9 +78,7 @@ export const sortProduct = (
           price,
         },
       },
-      err => {
-        if (err) console.error(err);
-      },
+      handleError,
     );
   } catch (err) {
     throw err;

@@ -9,6 +9,9 @@ import { Request } from 'express';
 export interface IPropsString {
   [key: string]: string;
 }
+export interface IPropsNum {
+  [key: string]: number;
+}
 
 export interface IProducts {
   title?: string;
@@ -34,6 +37,7 @@ export interface IUser extends Document {
 }
 
 export interface IProduct extends Document {
+  _id: String;
   title: string;
   subtitle: string;
   url: string;
@@ -46,4 +50,12 @@ export interface ICtx {
 
 export interface IQueryIds {
   ids: [string];
+}
+
+export interface IPaginate {
+  page_size: number;
+  first_id?: string;
+  last_id?: string;
+  direction: string;
+  ids?: [string];
 }
