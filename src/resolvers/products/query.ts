@@ -30,21 +30,16 @@ export const products = async (
     let data: any = [];
     let options: any = {};
 
-    options = first_id && !last_id && { $lt: first_id };
-    options = last_id && !first_id && { $gt: last_id };
-
-    if ((!ids && first_id) || last_id) {
-      data = await Product.find({ _id: options })
-        .sort({ _id: sd[dir] })
-        .limit(page_size);
-    } else if (!ids && !first_id && !last_id) {
-      data = await Product.find().sort({ _id: sd[dir] }).limit(page_size);
+    if (!ids && first_id && !last_id) {
+      options = { _id: { $lt: first_id } };
+    } else if (!ids && last_id && !first_id) {
+      options = { _id: { $gt: last_id } };
     } else if (ids && !first_id && !last_id) {
-      data = await Product.find({ _id: { $in: ids, $options: 'i' } })
-        .sort({ _id: sd[dir] })
-        .limit(page_size);
+      options = { _id: { $in: ids } };
     }
 
+    data = await Product.find(options).sort({ _id: sd[dir] }).limit(page_size);
+    
     const firstId = data.length && data.length > 0 ? data[0]._id : null;
 
     let lastId = null;

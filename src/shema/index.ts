@@ -35,10 +35,11 @@ export const typeDefs = `
     currentUser: User
     product(_id: String!): Product
     products(
-      page_size: Int!,
-      first_id: ID,
-      last_id: ID,
       direction: String!
+      first_id: ID,
+      ids: [String],
+      last_id: ID,
+      page_size: Int!,
     ): Pagination
   }
   type Mutation {
