@@ -6,6 +6,9 @@
 import { Document } from 'mongoose'
 import { Request } from 'express';
 
+export interface IAllAny {
+  [key: string]: any;
+}
 export interface IPropsString {
   [key: string]: string;
 }

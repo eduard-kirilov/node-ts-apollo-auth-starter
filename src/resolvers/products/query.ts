@@ -3,7 +3,6 @@
  * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
-import { isArray } from 'lodash';
 import { Product } from '../../models/product';
 import { IPropsString, IPaginate } from '../../utils/interface';
 import { switchDirection as sd } from '../../utils/helper';
@@ -29,17 +28,22 @@ export const products = async (
     }
     let data: any = [];
     let options: any = {};
-
+    let sortOptions: any = {};
     if (!ids && first_id && !last_id) {
-      options = { _id: { $lt: first_id } };
+      options = { _id: { $lt: first_id} };
+      sortOptions = { _id: -1 };
     } else if (!ids && last_id && !first_id) {
-      options = { _id: { $gt: last_id } };
+      options = { _id: { $gt: last_id} };
+      sortOptions = { _id: 1 };
     } else if (ids && !first_id && !last_id) {
       options = { _id: { $in: ids } };
     }
 
-    data = await Product.find(options).sort({ _id: sd[dir] }).limit(page_size);
-    
+    data = await Product.find(options)
+      .sort(sortOptions)
+      .limit(page_size)
+      .sort({ _id: sd[dir] });
+
     const firstId = data.length && data.length > 0 ? data[0]._id : null;
 
     let lastId = null;
