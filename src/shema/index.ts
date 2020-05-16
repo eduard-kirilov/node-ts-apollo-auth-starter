@@ -25,10 +25,9 @@ export const typeDefs = `
     _id: ID
   }
   type Pagination {
-    data: [Product],
-    first_id: ID,
-    last_id: ID,
+    page: Int,
     total: Int,
+    data: [Product],
   }
   type Query {
     users: [User!]!
@@ -36,10 +35,9 @@ export const typeDefs = `
     product(_id: String!): Product
     products(
       direction: String!
-      first_id: ID,
       ids: [String],
-      last_id: ID,
-      page_size: Int!,
+      page: Int,
+      per_page: Int!,
     ): Pagination
   }
   type Mutation {

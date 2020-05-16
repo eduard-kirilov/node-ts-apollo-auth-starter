@@ -18,7 +18,7 @@ export const product = async (parent: unknown, { _id }: IPropsString) => {
 
 export const products = async (
   parent: unknown,
-  { ids, page_size, first_id, last_id, direction: dir }: IPaginate,
+  { ids, per_page, page, direction: dir }: IPaginate,
 ) => {
   try {
     if (!dir) {
@@ -28,32 +28,24 @@ export const products = async (
     }
     let data: any = [];
     let options: any = {};
-    let sortOptions: any = {};
-    if (!ids && first_id && !last_id) {
-      options = { _id: { $lt: first_id} };
-      sortOptions = { _id: -1 };
-    } else if (!ids && last_id && !first_id) {
-      options = { _id: { $gt: last_id} };
-      sortOptions = { _id: 1 };
-    } else if (ids && !first_id && !last_id) {
+
+    if (!ids && typeof page === 'number') {
+      options = { number: { 
+        $gte: page * per_page,
+        $lt: (page + 1) * per_page,
+      } };
+    } else if (ids && (typeof page !== 'number' || !page)) {
       options = { _id: { $in: ids } };
     }
 
-    data = await Product.find(options)
-      .sort(sortOptions)
-      .limit(page_size)
-      .sort({ _id: sd[dir] });
+    console.log('options ', options)
+    data = await Product.find(options).sort({ _id: sd[dir] });
 
-    const firstId = data.length && data.length > 0 ? data[0]._id : null;
-
-    let lastId = null;
-    await (data || []).map(({ _id }: any) => (lastId = _id));
     const total = await Product.countDocuments({});
 
     return {
       data,
-      first_id: firstId,
-      last_id: lastId,
+      page,
       total,
     };
   } catch (err) {

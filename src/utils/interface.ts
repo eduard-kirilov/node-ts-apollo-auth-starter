@@ -56,9 +56,8 @@ export interface IQueryIds {
 }
 
 export interface IPaginate {
-  page_size: number;
-  first_id?: string;
-  last_id?: string;
+  per_page: number;
+  page?: number;
   direction: string;
   ids?: [string];
 }
