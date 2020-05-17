@@ -3,7 +3,7 @@
  * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
-import { Product } from '../../models/product';
+import { Products } from '../../models/products';
 import { IPropsString } from '../../utils/interface';
 import { handleError } from '../../utils/helper';
 
@@ -12,13 +12,13 @@ export const addProduct = (
   { title, subtitle, url, price }: IPropsString,
 ) => {
   try {
-    const product = new Product({
+    const products = new Products({
       title,
       subtitle,
       url,
       price,
     });
-    return product.save();
+    return products.save();
   } catch (err) {
     throw err;
   }
@@ -26,7 +26,7 @@ export const addProduct = (
 
 export const delProduct = async (parent: unknown, { _id }: IPropsString) => {
   try {
-    await Product.findOneAndRemove({ _id }, handleError);
+    await Products.findOneAndRemove({ _id }, handleError);
     return { _id };
   } catch (err) {
     throw err;
@@ -38,7 +38,7 @@ export const upProduct = async (
   { _id, title, subtitle, url, price }: IPropsString,
 ) => {
   try {
-    const product = await Product.updateOne(
+    const products = await Products.updateOne(
       {
         _id,
       },
@@ -52,7 +52,7 @@ export const upProduct = async (
       },
       handleError,
     );
-    if (product.ok) {
+    if (products.ok) {
       return { _id };
     }
     throw new Error('Product not found');
@@ -66,7 +66,7 @@ export const sortProduct = (
   { id, title, subtitle, url, price }: IPropsString,
 ) => {
   try {
-    return Product.updateOne(
+    return Products.updateOne(
       {
         _id: id,
       },

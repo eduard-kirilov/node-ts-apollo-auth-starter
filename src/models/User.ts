@@ -4,7 +4,6 @@
 * Copyright (c) 2020 Eduard Kirilov | MIT License
 */
 import bcrypt from 'bcrypt';
-// import crypto from 'crypto';
 import mongoose from 'mongoose';
 import { IUser } from '../utils/interface';
 

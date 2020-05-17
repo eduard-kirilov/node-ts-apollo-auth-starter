@@ -3,14 +3,14 @@
  * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
-import { Product } from '../../models/product';
+import { Products } from '../../models/products';
 import { IPropsString, IPaginate } from '../../utils/interface';
 import { switchDirection as sd } from '../../utils/helper';
 
 export const product = async (parent: unknown, { _id }: IPropsString) => {
   try {
-    const product = await Product.findById(_id);
-    return product;
+    const products = await Products.findById(_id);
+    return products;
   } catch (err) {
     throw err;
   }
@@ -30,18 +30,17 @@ export const products = async (
     let options: any = {};
 
     if (!ids && typeof page === 'number') {
-      options = { number: { 
-        $gte: page * per_page,
-        $lt: (page + 1) * per_page,
-      } };
+      data = await Products.find().sort({ _id: sd[dir] })
+        .skip(per_page * page)
+        .limit( per_page );
     } else if (ids && (typeof page !== 'number' || !page)) {
       options = { _id: { $in: ids } };
+      data = await Products.find({ _id: { $in: ids } }).sort({ _id: sd[dir] })
+    } else {
+      data = await Products.find().sort({ _id: sd[dir] });
     }
 
-    console.log('options ', options)
-    data = await Product.find(options).sort({ _id: sd[dir] });
-
-    const total = await Product.countDocuments({});
+    const total = await Products.countDocuments({});
 
     return {
       data,
