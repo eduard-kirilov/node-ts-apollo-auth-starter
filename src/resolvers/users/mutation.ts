@@ -4,7 +4,7 @@
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
 import passport from 'passport';
-import { isAuthenticated } from '../../utils/helper';
+import { isAuthenticated, authenticate } from '../../utils/helper';
 import { ICtx, IPropsString } from '../../utils/interface';
 import { User } from '../../models/user';
 
@@ -25,11 +25,8 @@ export const signup = async (
 
       const saveUser = await newUser.save();
 
-      await req.logIn(saveUser, (err: any) => {
-        if (err) throw new Error('User is not login');
-      });
-
-      return saveUser;
+      if (saveUser) return authenticate({ email, password }, req);
+      throw new Error('Error on the server, the user was not created.');
     }
   } catch (err) {
     throw err;
@@ -40,25 +37,8 @@ export const login = (
   parent: unknown,
   args: IPropsString,
   { req }: ICtx,
-) =>
-  new Promise((resolve: any, reject: any) => {
-    passport.authenticate('local', async (err, user, info) => {
-      try {
-        if (err) throw new Error('User is not login!');
-        if (!user)
-          throw new Error('You entered an incorrect username or password!');
+) => authenticate(args, req);
 
-        await req.logIn(user, (err: any) => {
-          if (err) reject(err);
-          return resolve(user);
-        });
-
-        return resolve(user);
-      } catch (err) {
-        return reject(err);
-      }
-    })({ query: args });
-  });
 
 export const logout = (
   parent: unknown,

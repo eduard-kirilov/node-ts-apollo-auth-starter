@@ -56,7 +56,7 @@ export const typeDefs = `
     ): ProductId
     sortProduct(title: String): Product
     delProduct (_id: String!): ProductId
-    signup(email: String!, password: String!): AuthData!
+    signup(email: String!, password: String!): User
     login(email: String, password: String): User
     logout: Boolean
   }
