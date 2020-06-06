@@ -57,11 +57,6 @@ app.disable('x-powered-by');
 if (NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
-} else {
-  app.use((err: any, req: any, res: any): void => {
-    console.error(err);
-    res.status(500).send('Server Error');
-  });
 }
 
 // Using graphql middleware
@@ -70,6 +65,8 @@ const server = new ApolloServer({
       typeDefs: [typeDefs],
       resolvers: resolvers,
     }),
+    introspection: true,
+    playground: true,
     context: ({ req }) => ({ req }),
   });
 
@@ -82,6 +79,7 @@ server.applyMiddleware({
 });
 
 app.listen(PORT, () => {
-    console.log(`${chalk.green('✓')} Server running on http://localhost:${PORT}  `);
-    console.log(`${chalk.green('✓')} GraphQL running on http://localhost:${PORT}/graphql  `);
+    console.log(`Node env on ${NODE_ENV}`);
+    console.log(`${chalk.green('✓')} Server running on ${HOST}:${PORT}  `);
+    console.log(`${chalk.green('✓')} GraphQL running on ${HOST}:${PORT}/graphql  `);
 })

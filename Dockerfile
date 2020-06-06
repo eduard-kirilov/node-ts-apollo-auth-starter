@@ -5,5 +5,4 @@ COPY package*.json /home/server
 RUN yarn \
     && yarn global add nodemon
 COPY . /home/server
-EXPOSE 3001
-CMD ["nodemon", "src/index.js"]
+CMD ["nodemon", "src/index.ts"]
