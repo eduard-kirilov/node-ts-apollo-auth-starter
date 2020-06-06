@@ -1,7 +1,9 @@
-FROM node:14.1.0-alpine3.11
+FROM node:14.4.0-alpine3.11
 WORKDIR /home/server
-COPY . /home/server
+RUN apk add python python2-dev make g++
+COPY package*.json /home/server
 RUN yarn \
     && yarn global add nodemon
-ENV PORT=${PORT}
+COPY . /home/server
+EXPOSE 3001
 CMD ["nodemon", "src/index.js"]
