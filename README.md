@@ -58,7 +58,7 @@
     Once launched, the server will be available on `http://localhost:${PORT}`!
     
     _You will also see a second link: _`http://localhost:${PORT}/graphqll`_.
-    This is a tool that you can use to experiment with requesting your data if you export it to Gatsby, but since this project uses a separate server, you can access it at `<Your backend / graphql>https://ph0en1x.herokuapp.com/graphql`.
+    This is a tool that you can use to experiment with requesting your data.
 
 ## 🧐 What's inside?
 
