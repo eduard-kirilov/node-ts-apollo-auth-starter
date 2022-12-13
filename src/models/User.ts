@@ -58,7 +58,7 @@ userSchema.methods.comparePassword = function comparePassword(
   cb: any,
 ) {
   bcrypt.compare(password, this.password, (
-    err: object,
+    err: Error | undefined,
     isMatch: boolean
   ) => {
     cb(err, isMatch);

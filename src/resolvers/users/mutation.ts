@@ -3,13 +3,12 @@
  * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
-import passport from 'passport';
 import { isAuthenticated, authenticate } from '../../utils/helper';
 import { ICtx, IPropsString } from '../../utils/interface';
 import { User } from '../../models/user';
 
 export const signup = async (
-  parent: unknown,
+  _: unknown,
   { email, password }: IPropsString,
   { req }: ICtx,
 ) => {
@@ -34,15 +33,15 @@ export const signup = async (
 };
 
 export const login = (
-  parent: unknown,
+  _: unknown,
   args: IPropsString,
   { req }: ICtx,
 ) => authenticate(args, req);
 
 
 export const logout = (
-  parent: unknown,
-  args: unknown,
+  _: unknown,
+  __: unknown,
   { req }: ICtx,
 ) => {
   try {

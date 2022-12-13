@@ -3,8 +3,9 @@
  * https://github.com/eduard-kirilov/node-ts-apollo-auth-starter
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
+import { SortOrder } from 'mongoose';
 import passport from 'passport';
-import { IPropsNum, IPropsString } from './interface';
+import { IPropsString } from './interface';
 
 export const isAuthenticated = (req: any) => {
   if (!req.isAuthenticated()) {
@@ -18,7 +19,7 @@ export const handleError = (err: any) => {
   }
 };
 
-export const switchDirection: IPropsNum = {
+export const switchDirection: Record<string, SortOrder> = {
   DESC: -1,
   ASC: 1,
 };

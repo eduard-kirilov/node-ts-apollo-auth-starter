@@ -8,8 +8,8 @@ import { ICtx } from '../../utils/interface';
 import { User } from '../../models/user';
 
 export const currentUser = (
-  parent: unknown,
-  args: unknown,
+  _: unknown,
+  __: unknown,
   { req }: ICtx,
 ) => {
   try {

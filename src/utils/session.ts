@@ -4,17 +4,15 @@
  * Copyright (c) 2020 Eduard Kirilov | MIT License
  */
 import session from 'express-session';
-import MongoStore from 'connect-mongo';
+import MS from 'connect-mongo';
 
 const {
   SESSION_SECRET = '',
   DB_HOST = '',
 } = process.env;
 
-// Init DB sesion
-const MS = MongoStore(session);
 
-export const ssessionMiddleware = session({
+export const sessionMiddleware = session({
   resave: true,
   saveUninitialized: false,
   secret: SESSION_SECRET,
@@ -23,8 +21,7 @@ export const ssessionMiddleware = session({
     httpOnly: false,
   }, // two weeks
   proxy: true,
-  store: new MS({
-    url: DB_HOST,
-    autoReconnect: true,
+  store: MS.create({
+    mongoUrl: DB_HOST,
   })
 });

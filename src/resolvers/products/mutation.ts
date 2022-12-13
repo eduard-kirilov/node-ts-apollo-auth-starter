@@ -8,7 +8,7 @@ import { IPropsString } from '../../utils/interface';
 import { handleError } from '../../utils/helper';
 
 export const addProduct = (
-  parent: unknown,
+  _: unknown,
   { title, subtitle, url, price }: IPropsString,
 ) => {
   try {
@@ -24,7 +24,7 @@ export const addProduct = (
   }
 };
 
-export const delProduct = async (parent: unknown, { _id }: IPropsString) => {
+export const delProduct = async (_: unknown, { _id }: IPropsString) => {
   try {
     await Products.findOneAndRemove({ _id }, handleError);
     return { _id };
@@ -34,7 +34,7 @@ export const delProduct = async (parent: unknown, { _id }: IPropsString) => {
 };
 
 export const upProduct = async (
-  parent: unknown,
+  _: unknown,
   { _id, title, subtitle, url, price }: IPropsString,
 ) => {
   try {
@@ -52,7 +52,7 @@ export const upProduct = async (
       },
       handleError,
     );
-    if (products.ok) {
+    if (products.upsertedId) {
       return { _id };
     }
     throw new Error('Product not found');
@@ -62,7 +62,7 @@ export const upProduct = async (
 };
 
 export const sortProduct = (
-  parent: unknown,
+  _: unknown,
   { id, title, subtitle, url, price }: IPropsString,
 ) => {
   try {

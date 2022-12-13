@@ -7,7 +7,7 @@ import { Products } from '../../models/products';
 import { IPropsString, IPaginate } from '../../utils/interface';
 import { switchDirection as sd } from '../../utils/helper';
 
-export const product = async (parent: unknown, { _id }: IPropsString) => {
+export const product = async (_: unknown, { _id }: IPropsString) => {
   try {
     const products = await Products.findById(_id);
     return products;
@@ -17,7 +17,7 @@ export const product = async (parent: unknown, { _id }: IPropsString) => {
 };
 
 export const products = async (
-  parent: unknown,
+  _: unknown,
   { ids, per_page, page, direction: dir }: IPaginate,
 ) => {
   try {

@@ -10,9 +10,8 @@ module.exports = {
       '@babel/preset-env',
       {
         targets: {
-          node: '10.15.3',
+          node: '18.12.1',
         },
-        loose: true,
         useBuiltIns: 'usage',
         corejs: 3,
         ignoreBrowserslistConfig: true,
@@ -25,6 +24,5 @@ module.exports = {
     '@babel/plugin-proposal-object-rest-spread',
     'babel-plugin-idx',
   ],
-  ignore: ['__tests__'],
   sourceMaps: 'inline',
 };

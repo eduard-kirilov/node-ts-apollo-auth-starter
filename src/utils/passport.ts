@@ -7,12 +7,15 @@ import passport from 'passport';
 
 import { Strategy } from 'passport-local';
 import { User } from '../models/user';
-import { IPropsString, IUserCompare } from '../utils/interface';
+import { IPropsString, IUserCompare, IUser } from '../utils/interface';
 
-passport.serializeUser((user: IPropsString, done) => done(null, user.id));
+passport.serializeUser((user, done) => {
+  const { id } = (user || {}) as IUser;
+  return done(null, id);
+});
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
+  User.findById(id, (err: Error, user: IUser) => {
     done(err, user);
   });
 });
